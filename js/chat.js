@@ -18,19 +18,18 @@ window.addEventListener("load",function()
             let msg = formularino["msg"].value;
 
             let imagen = formularino["archivo"].files[0];
-            let img;
 
             if((/^image\//).test(imagen.type))
             {
                 var reader = new FileReader();
                 reader.onload = function(e)
                 {
-                    img = e.target.result;
+                    imagen = e.target.result;
                 }
                 reader.readAsDataURL(imagen);
             }
 
-            var envio = "user="+user+"&msg="+msg+"&img="+img;
+            var envio = "user="+user+"&msg="+msg+"&img="+imagen;
             envio = encodeURI(envio);
 
             const ajaxRequest = new XMLHttpRequest();
@@ -48,9 +47,7 @@ window.addEventListener("load",function()
                         formularino["msg"].focus();
                         formularino["archivo"].value = "";
                     }
-                    else{
-                        lacosa.innerHTML = "ERROR";
-                    }
+                    lacosa.innerHTML = respuesta;
                 }
             }
             

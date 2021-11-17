@@ -6,6 +6,9 @@
     
     BD::conectar();
 
+    var_dump($_POST);
+    var_dump($_FILES);
+
     if(isset($_POST["user"]) && isset($_POST["msg"]))
     {
         $ultimoId = BD::getUltimoId();
