@@ -1,0 +1,57 @@
+* {
+    font-family: sans-serif;
+}
+
+#chat-window {
+    background-color: palegoldenrod;
+    border: double dodgerblue 3px;
+    padding: 20px 5% 20px 5%;
+    margin: 20px 5% 20px 5%;
+    overflow-y: scroll;
+    height: 500px;
+}
+
+.mensaje-individual {
+    margin: 5px 30%;
+    border: solid lightgreen 2px;
+    border-radius: 10px;
+    padding: 2px;
+}
+
+.propio {
+    text-align: right;
+    margin-left: 30%;
+    background-color: rgb(180, 255, 180);
+    box-shadow: -5px 5px 5px rgb(15,15,15);
+    border: solid black 1px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    overflow:auto;
+}
+
+.ajeno {
+    text-align: left;
+    margin-right: 30%;
+    background-color: rgb(240, 240, 240);
+    box-shadow: 5px 5px 5px rgb(15,15,15);
+    border: solid black 1px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    overflow:auto;
+}
+
+.div-usuario {
+    color: gray;
+    font-size: small;
+}
+
+.div-fecha {
+    color: gray;
+    font-size: small;
+}
+
+.div-texto {
+
+}
