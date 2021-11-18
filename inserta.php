@@ -11,8 +11,17 @@
 
     if(isset($_POST["user"]) && isset($_POST["msg"]))
     {
+        if(isset($_FILES["archivo"]))
+        {
+            $img = file_get_contents($_FILES["archivo"]["tmp_name"]);
+            $img = base64_encode($img);
+        }
+        else
+        {
+            $img = "";
+        }
         $ultimoId = BD::getUltimoId();
-        $m = new Mensaje($ultimoId, $_POST["user"], $_POST["msg"], date('Y-m-d H:i:s'), $_FILES["img"]); // DOLAR FILE SEÑOR DOLAR FILE
+        $m = new Mensaje($ultimoId, $_POST["user"], $_POST["msg"], date('Y-m-d H:i:s'), $img);
 
         BD::insertaMensaje($m);
         echo "OK";

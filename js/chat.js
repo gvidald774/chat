@@ -9,28 +9,27 @@ window.addEventListener("load",function()
     
     var tempoMsg = setInterval(pideUltimosMensajes,5000);
 
-    function enviarMensaje(ev) // Lo suyo es la función limpia señor
+    function enviarMensaje(ev) // Lo suyo es la función limpia señor --> Creo que tengo que cambiarlo por FormData.
     {
+        /**
+         * var formData = new FormData();
+         * formData.append("usuario",usuario.value);
+         * formData.append("mensaje",mensaje.value);
+         * ajax.open("POST","php/insertar.php");
+         * ajax.setRequestHeader("content-type","application/7x-www-form-urlencoded"); --> esto ya se mete solo en el formData.
+         * ajax.send(formData);
+         */
         ev.preventDefault();
         if(formularino["user"].value != "" && formularino["msg"].value != "")
         {
             let user = formularino["user"].value;
             let msg = formularino["msg"].value;
 
-            let imagen = formularino["archivo"].files[0];
-
-            if((/^image\//).test(imagen.type))
+            let imagen = "";
+            if(formularino["archivo"].files.length > 0)
             {
-                var reader = new FileReader();
-                reader.onload = function(e)
-                {
-                    imagen = e.target.result;
-                }
-                reader.readAsDataURL(imagen);
+                imagen = formularino["archivo"].files[0];
             }
-
-            var envio = "user="+user+"&msg="+msg+"&img="+imagen;
-            envio = encodeURI(envio);
 
             const ajaxRequest = new XMLHttpRequest();
 
@@ -50,10 +49,15 @@ window.addEventListener("load",function()
                     lacosa.innerHTML = respuesta;
                 }
             }
+
+            var formData = new FormData();
+            formData.append("user",formularino["user"].value);
+            formData.append("msg",formularino["msg"].value);
+            formData.append("archivo",imagen);
             
             ajaxRequest.open("POST","inserta.php");
-            ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            ajaxRequest.send(envio);
+            //ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            ajaxRequest.send(formData);
 
         }
 
@@ -113,7 +117,7 @@ window.addEventListener("load",function()
         
     }
 
-    function crearMensaje(mensaje, autor, img)
+    function crearMensaje(mensaje, autor)
     {
         var div = document.createElement("div");
         var claseUsuario = (mensaje.user == autor)?"propio":"ajeno";
@@ -124,9 +128,9 @@ window.addEventListener("load",function()
         fecha.innerHTML = mensaje.fecha;
         fecha.className = "div-fecha";
         var imagen = document.createElement("div");
-        if((/^data:image/).test(img))
+        if((/^\/9j\//).test(mensaje.imgblob))
         {
-            imagen.innerHTML = "<img src=\""+imagen+"\"/>"
+            imagen.innerHTML = "<img src='data:image/jpg;base64,"+mensaje.imgblob+"'/>"
         }
         imagen.className = "div-texto";
         var texto = document.createElement("div");
