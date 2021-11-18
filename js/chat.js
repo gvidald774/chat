@@ -9,56 +9,32 @@ window.addEventListener("load",function()
     
     var tempoMsg = setInterval(pideUltimosMensajes,5000);
 
-    function enviarMensaje(ev) // Lo suyo es la función limpia señor --> Creo que tengo que cambiarlo por FormData.
+    async function enviarMensaje(ev) // Lo suyo es la función limpia señor --> Creo que tengo que cambiarlo por FormData.
     {
-        /**
-         * var formData = new FormData();
-         * formData.append("usuario",usuario.value);
-         * formData.append("mensaje",mensaje.value);
-         * ajax.open("POST","php/insertar.php");
-         * ajax.setRequestHeader("content-type","application/7x-www-form-urlencoded"); --> esto ya se mete solo en el formData.
-         * ajax.send(formData);
-         */
         ev.preventDefault();
         if(formularino["user"].value != "" && formularino["msg"].value != "")
         {
-            let user = formularino["user"].value;
-            let msg = formularino["msg"].value;
-
             let imagen = "";
             if(formularino["archivo"].files.length > 0)
             {
                 imagen = formularino["archivo"].files[0];
             }
 
-            const ajaxRequest = new XMLHttpRequest();
-
-            ajaxRequest.onreadystatechange = function()
-            {
-                var lacosa = document.getElementById("comovalacosa");
-                if(ajaxRequest.readyState==4 && ajaxRequest.status == 200)
-                {
-                    var respuesta = ajaxRequest.responseText;
-                    //lacosa.innerHTML = respuesta;
-                    if(respuesta=="OK")
-                    {
-                        formularino["msg"].value = "";
-                        formularino["msg"].focus();
-                        formularino["archivo"].value = "";
-                    }
-                    lacosa.innerHTML = respuesta;
-                }
-            }
-
             var formData = new FormData();
             formData.append("user",formularino["user"].value);
             formData.append("msg",formularino["msg"].value);
             formData.append("archivo",imagen);
-            
-            ajaxRequest.open("POST","inserta.php");
-            //ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            ajaxRequest.send(formData);
 
+            fetch("inserta.php",{
+                method:"POST",
+                body:formData
+            }).then(response => response.text())
+            .catch(error=>console.error("Error",error))
+            .then(response => {
+                formularino["msg"].value="";
+                formularino["msg"].focus();
+                formularino["archivo"].value="";
+            })
         }
 
     }
